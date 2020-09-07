@@ -21,4 +21,4 @@ def debug(fn):
 class PandasPreprocessor:
 	'''Class to preprocessing any datasets'''
 	def __init__(self, settings: Dict):
-		self.settings = settings
+		self.settings = settings # data settings 
