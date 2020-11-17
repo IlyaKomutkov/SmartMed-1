@@ -342,8 +342,8 @@ class StatisticsDashboard(Dashboard):
 						 dash.dependencies.Input('xaxis_column_name_pie', 'value'))(update_pie)
 
 		available_indicators = df.columns.unique()
-
-		return html.Div([html.Div(html.H1(children='Круговая диаграмма'), style={'text-align': 'center'}),
+		if df.size > 0:
+			return html.Div([html.Div(html.H1(children='Круговая диаграмма'), style={'text-align': 'center'}),
 					 html.Div([
 						 html.Div([
 							 html.Div([
@@ -362,6 +362,12 @@ class StatisticsDashboard(Dashboard):
 																	   'border-style': 'solid', 'padding': '5px'}),
 					 html.Div(dcc.Markdown(children=markdown_text_pie), style={'width': '18%', 'float': 'right',
 																				   'display': 'inline-block'})],
+					style={'margin': '100px'})
+		else:
+			return html.Div([html.Div(html.H1(children='Круговая диаграмма'), style={'text-align': 'center'}),
+					 html.Div(dcc.Markdown(
+						 children='Ошибка: невозможно построить круговую диаграмму, т.к. нет категориальных данных.'),
+						 style={'width': '80%','display': 'inline-block'})],
 					style={'margin': '100px'})
 
 	def _generate_dotplot(self):
@@ -391,8 +397,8 @@ class StatisticsDashboard(Dashboard):
 		self.app.callback(dash.dependencies.Output('Dot Plot', 'figure'),
 							  dash.dependencies.Input('xaxis_column_name_dotplot', 'value'),
 							  dash.dependencies.Input('yaxis_column_name_dotplot', 'value'))(update_dot)
-
-		return html.Div([html.Div(html.H1(children='Точечная диаграмма'), style={'text-align': 'center'}),
+		if df_cat.size > 0:
+			return html.Div([html.Div(html.H1(children='Точечная диаграмма'), style={'text-align': 'center'}),
 						 html.Div([
 							html.Div([
 								html.Div([
@@ -420,6 +426,12 @@ class StatisticsDashboard(Dashboard):
 																		'border-style': 'solid', 'padding':'5px'}),
 						 html.Div(dcc.Markdown(children=markdown_text_dotplot),style={'width': '18%', 'float': 'right',
 															'display': 'inline-block'})],style={'margin': '100px'})
+		else:
+			return html.Div([html.Div(html.H1(children='Точечная диаграмма'), style={'text-align': 'center'}),
+						 html.Div(dcc.Markdown(
+							 children='Ошибка: невозможно построить точечную диаграмму, т.к. нет категориальных данных.'),
+							 style={'width': '80%', 'display': 'inline-block'})
+						], style={'margin': '100px'})
 
 	def _generate_box_hist(self):
 		df = self.pp.get_numeric_df(self.settings['data'])
