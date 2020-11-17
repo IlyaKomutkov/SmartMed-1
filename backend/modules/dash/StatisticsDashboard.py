@@ -100,7 +100,7 @@ class StatisticsDashboard(Dashboard):
 						 value=available_indicators[1]
 					)
 				], style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
-			]),
+			], style={'padding': '5px'}),
 			dcc.Graph(id='linear_graph')], style={'width': '78%', 'display': 'inline-block','border-color': 'rgb(220, 220, 220)','border-style': 'solid','padding':'5px'}),
 			html.Div(dcc.Markdown(children=markdown_text_lin), style={'width': '18%', 'float': 'right', 'display': 'inline-block'})], style={'margin':'100px'}
 		)
@@ -206,7 +206,8 @@ class StatisticsDashboard(Dashboard):
 								 id='xaxis_column_name_hist',
 								 options=[{'label': i, 'value': i}
 										  for i in available_indicators],
-								 value=available_indicators[0]
+								 value=available_indicators[0],
+								 style={'padding': '5px'}
 							 ),
 							 dcc.Graph(id='Histogram')],
 							 style={'width': '78%', 'display': 'inline-block', 'border-color': 'rgb(220, 220, 220)',
@@ -257,9 +258,9 @@ class StatisticsDashboard(Dashboard):
 						 value=available_indicators[1]
 					)
 				], style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
-			]),
-			dcc.Graph(id='log_graph')], style={'width': '78%', 'display': 'inline-block','border-color':'rgb(220, 220, 220)','border-style': 'solid','padding':'5px'}),
-			html.Div(dcc.Markdown(children=markdown_text_log), style={'width': '18%', 'float': 'right', 'display': 'inline-block'})], style={'margin':'100px'}
+			], style={'padding': '5px'}),
+			dcc.Graph(id='log_graph')], style={'width': '78%', 'display': 'inline-block', 'border-color':' rgb(220, 220, 220)', 'border-style': 'solid', 'padding': '5px'}),
+			html.Div(dcc.Markdown(children=markdown_text_log), style={'width': '18%', 'float': 'right', 'display': 'inline-block'})], style={'margin': '100px'}
 		)
 
 	def _generate_linlog(self):
@@ -319,7 +320,7 @@ class StatisticsDashboard(Dashboard):
 								value='Linear'
 							)
 						], style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
-						]),
+						], style={'padding': '5px'}),
 			dcc.Graph(id='linlog_graph')], style={'width': '78%', 'display': 'inline-block','border-color':'rgb(220, 220, 220)','border-style': 'solid','padding':'5px'}),
 			html.Div(dcc.Markdown(children=markdown_text_linlog), style={'width': '18%', 'float': 'right', 'display': 'inline-block'})], style={'margin':'100px'}
 
@@ -354,7 +355,7 @@ class StatisticsDashboard(Dashboard):
 									 value=available_indicators[0]
 								 )
 
-							 ], style={'width': '48%', 'display': 'inline-block'})
+							 ], style={'width': '48%', 'display': 'inline-block', 'padding': '5px'})
 						 ]),
 						 dcc.Graph(id='Pie Chart', figure=fig)], style={'width': '78%', 'display': 'inline-block',
 																	   'border-color': 'rgb(220, 220, 220)',
@@ -413,7 +414,7 @@ class StatisticsDashboard(Dashboard):
 									)
 
 								], style={'width': '48%', 'float': 'right', 'display': 'inline-block'})
-							]),
+							], style={'padding': '5px'}),
 					     dcc.Graph(id='Dot Plot', figure=fig)], style={'width': '78%', 'display': 'inline-block',
 																		'border-color': 'rgb(220, 220, 220)',
 																		'border-style': 'solid', 'padding':'5px'}),
@@ -456,7 +457,7 @@ class StatisticsDashboard(Dashboard):
 										value=available_indicators[0]
 									)
 
-								], style={'width': '48%', 'display': 'inline-block'})
+								], style={'width': '48%', 'display': 'inline-block', 'padding': '5px'})
 							]),
 							 html.Div([
 								 dcc.Graph(id='Histogram_boxhist', figure=fig_hist),
