@@ -1,10 +1,17 @@
 import pickle
 import time
+import threading
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QWidget, QToolTip, QPushButton, QApplication, QMessageBox)
 
 from .VisualizationWindow import VisualizationWindow
+
+
+import sys
+sys.path.append("...")
+
+from backend import ModuleManipulator
 
 
 class WrappedVisualizationWindow(VisualizationWindow, QtWidgets.QMainWindow):
@@ -20,9 +27,11 @@ class WrappedVisualizationWindow(VisualizationWindow, QtWidgets.QMainWindow):
             'heatmap': True,
             'scatter': True,
             'hist': True,
-            'box': True
+            'box': True,
+            'piechart': True,
+            'dotplot': True,
         }
-        self.checkBoxBar.setChecked(True)
+        self.checkBoxPie.setChecked(True)
         self.checkBoxLinear.setChecked(True)
         self.checkBoxHeatmap.setChecked(True)
         self.checkBoxLog.setChecked(True)
@@ -36,7 +45,7 @@ class WrappedVisualizationWindow(VisualizationWindow, QtWidgets.QMainWindow):
     def __build_buttons(self):
         self.pushButton.clicked.connect(self.back)
         self.pushButtonDone.clicked.connect(self.done)
-        self.checkBoxBar.clicked.connect(self.check_bar)
+        self.checkBoxPie.clicked.connect(self.check_pie)
         self.checkBoxLinear.clicked.connect(self.check_linear)
         self.checkBoxLog.clicked.connect(self.check_log)
         self.checkBoxCorr.clicked.connect(self.check_corr)
@@ -55,12 +64,20 @@ class WrappedVisualizationWindow(VisualizationWindow, QtWidgets.QMainWindow):
         with open('settings.py', 'rb') as f:
             data = pickle.load(f)
             data['MODULE_SETTINGS']['graphs'].update(self.settings)
-
+        
         with open('settings.py', 'wb') as f:
             pickle.dump(data, f)
-        self.close()
-        # self.hide()
-        # self.child.show()
+
+        with open('settings.py', 'rb') as f:
+            settings = pickle.load(f)
+
+        module_starter = ModuleManipulator(settings)
+        threading.Thread(target=module_starter.start, daemon=True).start()
+
+        self.hide()
+        self.child.show()
+
+
 
     def check_linear(self):
         msg = QMessageBox()
@@ -133,10 +150,10 @@ class WrappedVisualizationWindow(VisualizationWindow, QtWidgets.QMainWindow):
             self.checkBoxDot.setChecked(False)
             self.settings['dotplot'] = False
 
-    def check_bar(self):
+    def check_pie(self):
         if self.checkBoxBar.isChecked():
             self.checkBoxBar.setChecked(True)
-            self.settings['barchart'] = True
+            self.settings['piechart'] = True
         else:
             self.checkBoxBar.setChecked(False)
-            self.settings['barchart'] = False
+            self.settings['piechart'] = False
