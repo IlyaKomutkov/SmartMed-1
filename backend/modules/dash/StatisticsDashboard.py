@@ -41,7 +41,8 @@ class StatisticsDashboard(Dashboard):
 					html.Div([dash_table.DataTable(
 					    id='table',
 					    columns=[{"name": i, "id": i, "deletable":True} for i in df.columns],
-					    data=df.to_dict('records')
+					    data=df.to_dict('records'),
+					    style_table={'overflowX': 'auto'}
 					)],style={'border-color': 'rgb(220, 220, 220)','border-style': 'solid','padding':'5px','margin':'5px'})],
 					style={'width': len_t, 'display': 'inline-block'}),
 					html.Div(dcc.Markdown(children=markdown_text_table), style={'width': len_text, 'float': 'right', 'display': 'inline-block'})
@@ -54,7 +55,8 @@ class StatisticsDashboard(Dashboard):
 					html.Div([dash_table.DataTable(
 					    id='table',
 					    columns=[{"name": i, "id": i, "deletable":True} for i in df.columns],
-					    data=df.to_dict('records')
+					    data=df.to_dict('records'),
+					    style_table={'overflowX': 'auto'}
     			)],style={'border-color':'rgb(220, 220, 220)','border-style': 'solid','padding':'5px','margin':'5px'})
 				], style={'margin':'50px'}
 			)
@@ -62,12 +64,13 @@ class StatisticsDashboard(Dashboard):
 	def _generate_linear(self):
 
 		def update_graph(xaxis_column_name, yaxis_column_name,):
-			fig = px.scatter(
-				self.settings['data'], x=xaxis_column_name, y=yaxis_column_name)
-			fig.update_xaxes(title=xaxis_column_name,
-							 type='linear')
-			fig.update_yaxes(title=yaxis_column_name,
-							 type='linear')
+			df = self.pp.get_numeric_df(self.settings['data']).copy()
+			fig = go.Figure(data=go.Scatter(x=df[xaxis_column_name],
+                                y=df[yaxis_column_name],
+                                mode='markers',
+                                marker_color=df[yaxis_column_name]))
+			fig.update_layout(xaxis_title=xaxis_column_name,
+				yaxis_title=yaxis_column_name)
 
 			return fig
 
@@ -154,7 +157,8 @@ class StatisticsDashboard(Dashboard):
 					html.Div([dash_table.DataTable(
 					    id='corr',
 					    columns=[{"name": i, "id": i} for i in df.columns],
-					    data=df.to_dict('records')
+					    data=df.to_dict('records'),
+					    style_table={'overflowX': 'auto'}
 					    )],style={'border-color':'rgb(220, 220, 220)','border-style': 'solid','padding':'5px'})],
 					style={'width': len_t, 'display': 'inline-block'}),
 					html.Div(dcc.Markdown(children=markdown_text_corr), style={'width': len_text, 'float': 'right', 'display': 'inline-block'})
@@ -167,7 +171,8 @@ class StatisticsDashboard(Dashboard):
 					html.Div([dash_table.DataTable(
 					    id='corr',
 					    columns=[{"name": i, "id": i} for i in df.columns],
-					    data=df.to_dict('records'))
+					    data=df.to_dict('records'),
+						style_table={'overflowX': 'auto'})
 					],style={'border-color':'rgb(192, 192, 192)','border-style': 'solid','padding':'5px'})	
 				], style={'margin':'50px'}
 			)
@@ -219,12 +224,13 @@ class StatisticsDashboard(Dashboard):
 	def _generate_log(self):
 
 		def update_graph(xaxis_column_name_log, yaxis_column_name_log,):
-			fig = px.scatter(
-				self.settings['data'], x=xaxis_column_name_log, y=yaxis_column_name_log)
-			fig.update_xaxes(title=xaxis_column_name_log,
-							 type='log')
-			fig.update_yaxes(title=yaxis_column_name_log,
-							 type='log')
+			df = self.pp.get_numeric_df(self.settings['data']).copy()
+			fig = go.Figure(data=go.Scatter(x=df[xaxis_column_name_log],
+                                y=df[yaxis_column_name_log],
+                                mode='markers',
+                                marker_color=df[yaxis_column_name_log]))
+			fig.update_layout(xaxis_title=xaxis_column_name_log,
+				yaxis_title=yaxis_column_name_log)
 
 			return fig
 
@@ -270,8 +276,13 @@ class StatisticsDashboard(Dashboard):
 
 		def update_graph(xaxis_column_name_linlog, yaxis_column_name_linlog,
 						 xaxis_type_linlog, yaxis_type_linlog):
-			fig = px.scatter(
-				self.settings['data'], x=xaxis_column_name_linlog, y=yaxis_column_name_linlog)
+			df = self.pp.get_numeric_df(self.settings['data']).copy()
+			fig = go.Figure(data=go.Scatter(x=df[xaxis_column_name_linlog],
+                                y=df[yaxis_column_name_linlog],
+                                mode='markers',
+                                marker_color=df[yaxis_column_name_linlog]))
+			fig.update_layout(xaxis_title=xaxis_column_name_linlog,
+				yaxis_title=yaxis_column_name_linlog)
 			fig.update_xaxes(title=xaxis_column_name_linlog,
 							 type='linear' if xaxis_type_linlog == 'Linear' else 'log')
 			fig.update_yaxes(title=yaxis_column_name_linlog,
