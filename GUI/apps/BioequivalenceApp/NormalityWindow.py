@@ -46,3 +46,4 @@ class NormalityWindow(object):
 " проверка данных на нормальность:"))
         self.radioButtonColm.setText(_translate("MainWindow", "Критерий Колмогорова-Смирнова"))
         self.radioButtonShap.setText(_translate("MainWindow", "Критерий Шапиро-Уилка"))
+        
