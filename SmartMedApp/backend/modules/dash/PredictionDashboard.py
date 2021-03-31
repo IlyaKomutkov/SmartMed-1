@@ -617,6 +617,9 @@ class LogisticRegressionDashboard(Dashboard):
         TSS = LinearRegressionModel.get_TSS(self.predict.model, df_Y.tolist(), mean_Y)
         de_fr = LinearRegressionModel.get_deg_fr(self.predict.model, self.predict.df_X_test)
         b = self.predict.model.get_all_coef()
+        df_column = list(self.predict.df_X_test.columns)
+        df_column.insert(0, 'Параметр')
+        df_result_2 = pd.DataFrame(columns=df_column)
         t_st = LinearRegressionModel.t_stat(self.predict.model, self.predict.df_X_test, self.predict.df_Y_test,
                                             predict_Y, de_fr,
                                             b)
@@ -625,35 +628,33 @@ class LogisticRegressionDashboard(Dashboard):
         p_values = LinearRegressionModel.p_values(self.predict.model, self.predict.df_X_test, t_st)
         b_st = LinearRegressionModel.st_coef(self.predict.model, self.predict.df_X_test, TSS, b)
 
-        res_b = []
+        res_b = ['b']
         list_b = list(b)
         for j in range(1, len(list_b)):
             res_b.append(round(list_b[j], 3))
+        df_result_2.loc[1] = res_b
 
-        res_bst = []
+        res_bst = ['b_st']
         list_bst = list(b_st)
         for j in range(len(list_bst)):
             res_bst.append(round(list_bst[j], 3))
+        df_result_2.loc[2] = res_bst
 
-        res_errb = []
+        res_errb = ['St.Error b']
         st_er_b = list(st_er_coef)
         for j in range(1, len(st_er_b)):
             res_errb.append(round(st_er_b[j], 3))
+        df_result_2.loc[3] = res_errb
 
-        res_tst = []
+        res_tst = ['t-критерий']
         for j in range(1, len(t_st)):
             res_tst.append(round(t_st[j], 3))
+        df_result_2.loc[4] = res_tst
 
-        res_pval = []
+        res_pval = ['p-value']
         for j in range(1, len(t_st)):
             res_pval.append(round(p_values[j], 3))
-
-        df_result_2 = pd.DataFrame({'Название переменной': self.predict.df_X.columns.tolist(),
-                                    'b': res_b,
-                                    'b_st': res_bst,
-                                    'St.Error b': res_errb,
-                                    't-критерий': res_tst,
-                                    'p-value': res_pval})
+        df_result_2.loc[5] = res_pval
 
         return html.Div([html.Div(html.H2(children='Критерии значимости переменных'), style={'text-align': 'center'}),
                          html.Div([html.Div(dash_table.DataTable(
@@ -675,7 +676,7 @@ class LogisticRegressionDashboard(Dashboard):
                                      for column, value in row.items()
                                  } for row in df_result_2.to_dict('records')
                              ],
-                         ), style={'width': str(len(df_result_2.columns) * 6) + '%', 'display': 'inline-block'}),
+                         ), style={'width': str(len(df_result_2.columns) * 10) + '%', 'display': 'inline-block'}),
                              html.Div(dcc.Markdown(markdown_linear_table2))],  # style={'margin': '50px'},
                              style={'width': '78%', 'display': 'inline-block',
                                     'border-color': 'rgb(220, 220, 220)', 'border-style': 'solid', 'padding': '5px'})
@@ -1102,7 +1103,6 @@ class ROC(Dashboard):
                     t_ind] / (self.tp_list[ind][t_ind] + self.fn_list[ind][t_ind]), 3)
         PPV = round(self.tp_list[ind][
                     t_ind] / (self.tp_list[ind][t_ind] + self.fp_list[ind][t_ind]), 3)
-        print(ind, TPR, PPV)
         accuracy = round((self.tp_list[ind][t_ind] + self.tn_list[ind][t_ind]) / (
             self.tp_list[ind][t_ind] + self.fn_list[ind][t_ind] + self.tn_list[ind][t_ind] + self.fp_list[ind][
                 t_ind]), 3)
