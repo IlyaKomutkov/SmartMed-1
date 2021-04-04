@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
     QWidget, QToolTip, QPushButton, QApplication, QMessageBox, )
 
 from .DownloadWindow import DownloadWindow
+from ..utils import remove_if_exists
 
 
 class WrappedDownloadWindow(DownloadWindow, QtWidgets.QMainWindow):
@@ -24,6 +25,7 @@ class WrappedDownloadWindow(DownloadWindow, QtWidgets.QMainWindow):
         self.pushButtonDownload1.clicked.connect(self.download1)
 
     def back(self):
+        remove_if_exists()
         self.hide()
         self.parent_parral.show()
 

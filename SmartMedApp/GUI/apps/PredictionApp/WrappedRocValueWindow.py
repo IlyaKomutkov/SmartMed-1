@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
     QWidget, QToolTip, QPushButton, QApplication, QMessageBox, QTableWidget)
 from .RocValueWindow import RocValueWindow
+from ..utils import remove_if_exists
 
 
 
@@ -21,6 +22,7 @@ class WrappedRocValueWindow(RocValueWindow, QtWidgets.QMainWindow):
         self.setWindowTitle('Выбор переменной')
 
     def back(self):
+        remove_if_exists()
         self.hide()
         self.parent.show()
 

@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (
     QWidget, QToolTip, QPushButton, QApplication, QMessageBox, )
 
 from .TreeFeaturesWindow import TreeFeaturesWindow
-
+from ..utils import remove_if_exists
 
 class WrappedTreeFeaturesWindow(TreeFeaturesWindow, QtWidgets.QMainWindow):
 
@@ -24,6 +24,7 @@ class WrappedTreeFeaturesWindow(TreeFeaturesWindow, QtWidgets.QMainWindow):
 
 
     def back(self):
+        remove_if_exists()
         self.hide()
         self.parent.show()
 

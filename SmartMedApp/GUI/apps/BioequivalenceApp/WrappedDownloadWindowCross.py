@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
     QWidget, QToolTip, QPushButton, QApplication, QMessageBox, )
 
 from .DownloadWindowCross import DownloadWindowCross
+from ..utils import remove_if_exists
 
 
 class WrappedDownloadWindowCross(DownloadWindowCross, QtWidgets.QMainWindow):
@@ -24,6 +25,7 @@ class WrappedDownloadWindowCross(DownloadWindowCross, QtWidgets.QMainWindow):
         self.pushButtonDownload1.clicked.connect(self.download1)
 
     def back(self):
+        remove_if_exists()
         self.hide()
         self.parent_cross.show()
 

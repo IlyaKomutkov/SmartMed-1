@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
     QWidget, QToolTip, QPushButton, QApplication, QMessageBox, QTableWidget)
 from .ValueWindow import ValueWindow
+from ..utils import remove_if_exists
 
 
 
@@ -20,6 +21,7 @@ class WrappedValueWindow(ValueWindow, QtWidgets.QMainWindow):
         self.pushButtonBack.clicked.connect(self.back)
         self.setWindowTitle('Выбор целевой переменной')
     def back(self):
+        remove_if_exists()
         self.hide()
         self.parent.show()
 
